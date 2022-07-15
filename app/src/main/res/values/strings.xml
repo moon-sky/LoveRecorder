@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Secret</string>
+    <string name="welcome_tips">宝儿，虽然简陋，希望你开心！</string>
+    <string name="time_meet">查一查我们认识多久了</string>
+    <string name="pick_me">点我</string>
+    <string name="wantgift">想要礼物吗?</string>
+    <string name="weather">查看天气</string>
+</resources>
