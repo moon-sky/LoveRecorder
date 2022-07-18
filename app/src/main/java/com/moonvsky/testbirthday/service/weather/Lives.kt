@@ -1,7 +1,7 @@
 /**
  * Copyright 2022 bejson.com
  */
-package com.moonvsky.testbirthday.service
+package com.moonvsky.testbirthday.service.weather
 
 import java.util.*
 

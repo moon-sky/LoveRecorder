@@ -6,7 +6,11 @@
     android:layout_height="match_parent"
 
     tools:context=".MainActivity">
-
+    <ImageView
+        android:id="@+id/iv_poem"
+        android:scaleType="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     <pl.droidsonroids.gif.GifTextView
         android:id="@+id/bg"
         android:layout_width="match_parent"
@@ -29,6 +33,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/wantgift"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@+id/gif" />
 
@@ -57,7 +62,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/time_meet"
-        android:textColor="@color/cardview_dark_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_time" />
@@ -67,8 +71,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text=""
-        android:textSize="20sp"
+        android:textSize="35sp"
         app:layout_constraintEnd_toStartOf="@id/tv_weather2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/time" />
@@ -78,9 +81,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text=""
         android:textColor="@color/teal_700"
-        android:textSize="20sp"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_weather"
         app:layout_constraintTop_toBottomOf="@+id/time" />
@@ -95,5 +97,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_weather" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/weather">
+        <ImageView
+            android:id="@+id/update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_rotate"/>
+        <TextView
+            android:id="@+id/tv_poem"
+            android:textSize="45sp"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center|top"
+            android:textColor="@android:color/widget_edittext_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            android:text="" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

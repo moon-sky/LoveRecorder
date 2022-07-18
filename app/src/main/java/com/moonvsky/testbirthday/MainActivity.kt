@@ -1,14 +1,24 @@
 package com.moonvsky.testbirthday
 
+import android.graphics.Bitmap
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.ColorUtils
+import androidx.palette.graphics.Palette
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.moonvsky.testbirthday.databinding.ActivityMainBinding
+import com.moonvsky.testbirthday.service.poem.bean.Content_list
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -18,29 +28,32 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var mediaPlayer:MediaPlayer
-    private lateinit var binding:ActivityMainBinding;
-    private lateinit var date:Date;
-    private val handler:Handler= object:Handler(Looper.getMainLooper()){
+    private lateinit var mediaPlayer: MediaPlayer
+    private lateinit var binding: ActivityMainBinding;
+    private lateinit var date: Date;
+    private lateinit var contentList: List<Content_list>
+    private var curPageIndex: Int = 0
+    private val handler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
-            when(msg.what){
-                0->{
-                    date=Date(2022-1900,1,7)
-                    binding.tvTime.text=TimeUtils().getDiffTime(date)
-                    sendEmptyMessageDelayed(0,1000)
+            when (msg.what) {
+                0 -> {
+                    date = Date(2022 - 1900, 1, 7)
+                    binding.tvTime.text = TimeUtils().getDiffTime(date)
+                    sendEmptyMessageDelayed(0, 1000)
                 }
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        mediaPlayer= MediaPlayer.create(this,R.raw.love)
-        findViewById<TextView>(R.id.button).setOnClickListener{
-            findViewById<TextView>(R.id.tv_name).text=getString(R.string.welcome_tips)
-            findViewById<GifTextView>(R.id.gif).visibility= View.VISIBLE
-            findViewById<GifTextView>(R.id.bg).visibility= View.VISIBLE
+        mediaPlayer = MediaPlayer.create(this, R.raw.love)
+        findViewById<TextView>(R.id.button).setOnClickListener {
+            findViewById<TextView>(R.id.tv_name).text = getString(R.string.welcome_tips)
+            findViewById<GifTextView>(R.id.gif).visibility = View.VISIBLE
+            findViewById<GifTextView>(R.id.bg).visibility = View.VISIBLE
             mediaPlayer.start()
         }
         binding.time.setOnClickListener {
@@ -48,25 +61,108 @@ class MainActivity : AppCompatActivity() {
             handler.sendEmptyMessage(0)
         }
         binding.weather.setOnClickListener {
-            MainScope().launch{
-                val beijing= withContext(Dispatchers.IO){
-                    WeatherRepository.getWeather("110108").execute().body()
+            MainScope().launch {
+                val beijing = withContext(Dispatchers.IO) {
+                    ServiceRepository.getWeather("110108").execute().body()
                 }
-                binding.tvWeather.text= beijing?.toString()?: "没查到"
-                val bijie= withContext(Dispatchers.IO){
-                    WeatherRepository.getWeather("520525").execute().body()
+                binding.tvWeather.text = beijing?.toString() ?: "没查到"
+                val bijie = withContext(Dispatchers.IO) {
+                    ServiceRepository.getWeather("520525").execute().body()
                 }
-                binding.tvWeather2.text=bijie?.toString()?:"没查到"
+                binding.tvWeather2.text = bijie?.toString() ?: "没查到"
             }
         }
+        binding.update.setOnClickListener {
+            curPageIndex = (curPageIndex + 1) % contentList.size
+            updateBgAndPoem()
+            MainScope().launch {
+                withContext(Dispatchers.IO){
+                    val result=ServiceRepository.getBingPic().execute()
+                    Log.d("TAG","getRandPic result:$result")
+                }
+            }
 
+        }
+        MainScope().launch {
+            val poem = withContext(Dispatchers.IO) {
+                ServiceRepository.getPoem().execute().body()
+            }
+            contentList = poem?.data?.content_list as List<Content_list>
+            val size = contentList.size
+            curPageIndex = (Math.random() * size).toInt()
+            updateBgAndPoem()
+        }
 
 
 //        val service: AMapWeatherService = retrofit.create(AMapWeatherService::class)
     }
-    companion object{
-        val BASE_URL="https://restapi.amap.com/v3/weather/"
+
+    private fun updateBgAndPoem() {
+        binding.tvPoem.text = contentList.get(curPageIndex).forward ?: ""
+        Glide.with(this@MainActivity).asBitmap().load(contentList.get(curPageIndex).img_url)
+            .listener(object :
+                RequestListener<Bitmap> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Bitmap>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onResourceReady(
+                    resource: Bitmap?,
+                    model: Any?,
+                    target: Target<Bitmap>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if (resource != null) {
+                        Palette.from(resource).generate {
+                            val vibrantColor =
+                                it?.getVibrantColor(resources.getColor(R.color.brown))
+//                            val lightVibrantColor =
+//                                it?.getLightVibrantColor(resources.getColor(R.color.design_default_color_primary))
+                            val darkVibrantColor =
+                                it?.getLightVibrantColor(resources.getColor(R.color.brown))
+                            val dominantColor =
+                                it?.getDominantColor(resources.getColor(R.color.design_default_color_primary))
+//                            val mutedColor =
+//                                it?.getMutedColor(resources.getColor(R.color.design_default_color_primary))
+                            if (vibrantColor != null) {
+                                binding.weather.setBackgroundColor(
+                                    ColorUtils.compositeColors(
+                                        vibrantColor,
+                                        resources.getColor(R.color.brown)
+                                    )
+                                )
+
+                                binding.button.setBackgroundColor(vibrantColor)
+                                binding.time.setBackgroundColor(vibrantColor)
+                            }
+//                            if (lightVibrantColor != null) {
+//                                binding.button.setBackgroundColor(lightVibrantColor)
+//                            }
+                            if (darkVibrantColor != null) {
+                                binding.tvPoem.setBackgroundColor(darkVibrantColor)
+
+
+                            }
+//                            if (dominantColor != null) {
+////                                binding.button.setBackgroundColor(dominantColor)
+//                                binding.tvPoem.setTextColor(dominantColor)
+//                            }
+//                            if (mutedColor != null) {
+//                                binding.time.setBackgroundColor(mutedColor)
+//                            };
+                        }
+                    }
+                    return false
+                }
+            }).into(binding.ivPoem)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer.release()
