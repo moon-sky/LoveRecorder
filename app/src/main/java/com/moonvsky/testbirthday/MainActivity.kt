@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.moonvsky.testbirthday.databinding.ActivityMainBinding
+import com.moonvsky.testbirthday.service.bing.BingResponseUtils
 import com.moonvsky.testbirthday.service.poem.bean.Content_list
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -74,12 +75,15 @@ class MainActivity : AppCompatActivity() {
         }
         binding.update.setOnClickListener {
             curPageIndex = (curPageIndex + 1) % contentList.size
-            updateBgAndPoem()
             MainScope().launch {
-                withContext(Dispatchers.IO){
-                    val result=ServiceRepository.getBingPic().execute()
-                    Log.d("TAG","getRandPic result:$result")
+               val result= withContext(Dispatchers.IO){
+                    ServiceRepository.getBingPic().execute()
                 }
+                updateBgAndPoem(BingResponseUtils.parseResponse(
+                    result.body()!!).second)
+                Log.d("TAG","getRandPic result:${result.body()} title:${BingResponseUtils.parseResponse(
+                    result.body()!!)} url= ${BingResponseUtils.parseResponse(
+                    result.body()!!).second}")
             }
 
         }
@@ -90,16 +94,13 @@ class MainActivity : AppCompatActivity() {
             contentList = poem?.data?.content_list as List<Content_list>
             val size = contentList.size
             curPageIndex = (Math.random() * size).toInt()
-            updateBgAndPoem()
+            updateBgAndPoem(contentList.get(curPageIndex).img_url)
         }
-
-
-//        val service: AMapWeatherService = retrofit.create(AMapWeatherService::class)
     }
 
-    private fun updateBgAndPoem() {
+    private fun updateBgAndPoem(url:String) {
         binding.tvPoem.text = contentList.get(curPageIndex).forward ?: ""
-        Glide.with(this@MainActivity).asBitmap().load(contentList.get(curPageIndex).img_url)
+        Glide.with(this@MainActivity).asBitmap().centerCrop().placeholder(R.drawable.icon).load(url)
             .listener(object :
                 RequestListener<Bitmap> {
                 override fun onLoadFailed(
@@ -108,7 +109,8 @@ class MainActivity : AppCompatActivity() {
                     target: Target<Bitmap>?,
                     isFirstResource: Boolean
                 ): Boolean {
-                    TODO("Not yet implemented")
+                    Log.d("TEST", e?.message.toString())
+                    return false
                 }
 
                 override fun onResourceReady(
@@ -141,21 +143,11 @@ class MainActivity : AppCompatActivity() {
                                 binding.button.setBackgroundColor(vibrantColor)
                                 binding.time.setBackgroundColor(vibrantColor)
                             }
-//                            if (lightVibrantColor != null) {
-//                                binding.button.setBackgroundColor(lightVibrantColor)
-//                            }
                             if (darkVibrantColor != null) {
                                 binding.tvPoem.setBackgroundColor(darkVibrantColor)
 
 
                             }
-//                            if (dominantColor != null) {
-////                                binding.button.setBackgroundColor(dominantColor)
-//                                binding.tvPoem.setTextColor(dominantColor)
-//                            }
-//                            if (mutedColor != null) {
-//                                binding.time.setBackgroundColor(mutedColor)
-//                            };
                         }
                     }
                     return false
