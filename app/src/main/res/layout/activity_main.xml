@@ -27,7 +27,7 @@
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+<!--    <TextView
         android:id="@+id/tv_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,17 +35,18 @@
         android:text="@string/wantgift"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/gif" />
+        app:layout_constraintTop_toBottomOf="@+id/gif" />-->
 
     <Button
         android:id="@+id/button"
         style="@style/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="@string/pick_me"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_time"
@@ -56,7 +57,6 @@
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <Button
-
         android:id="@+id/time"
         style="@style/button"
         android:layout_width="wrap_content"
@@ -100,20 +100,21 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/weather">
+        app:layout_constraintBottom_toBottomOf="parent">
         <ImageView
             android:id="@+id/update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
             android:src="@android:drawable/ic_menu_rotate"/>
         <TextView
             android:id="@+id/tv_poem"
             android:textSize="45sp"
             android:layout_marginTop="30dp"
             android:layout_gravity="center|top"
-            android:textColor="@android:color/widget_edittext_dark"
+            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="20dp"
             android:alpha="0.7"
             android:text="" />
     </FrameLayout>

@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         mediaPlayer = MediaPlayer.create(this, R.raw.love)
         findViewById<TextView>(R.id.button).setOnClickListener {
-            findViewById<TextView>(R.id.tv_name).text = getString(R.string.welcome_tips)
             findViewById<GifTextView>(R.id.gif).visibility = View.VISIBLE
             findViewById<GifTextView>(R.id.bg).visibility = View.VISIBLE
             mediaPlayer.start()
@@ -64,11 +63,11 @@ class MainActivity : AppCompatActivity() {
         binding.weather.setOnClickListener {
             MainScope().launch {
                 val beijing = withContext(Dispatchers.IO) {
-                    ServiceRepository.getWeather("110108").execute().body()
+                    ServiceRepository.getWeather(Constants.HAIDIAN_CODE).execute().body()
                 }
                 binding.tvWeather.text = beijing?.toString() ?: "没查到"
                 val bijie = withContext(Dispatchers.IO) {
-                    ServiceRepository.getWeather("520525").execute().body()
+                    ServiceRepository.getWeather(Constants.BIJIE_CODE).execute().body()
                 }
                 binding.tvWeather2.text = bijie?.toString() ?: "没查到"
             }
@@ -142,11 +141,7 @@ class MainActivity : AppCompatActivity() {
 
                                 binding.button.setBackgroundColor(vibrantColor)
                                 binding.time.setBackgroundColor(vibrantColor)
-                            }
-                            if (darkVibrantColor != null) {
-                                binding.tvPoem.setBackgroundColor(darkVibrantColor)
-
-
+                                binding.tvPoem.setBackgroundColor(vibrantColor)
                             }
                         }
                     }
