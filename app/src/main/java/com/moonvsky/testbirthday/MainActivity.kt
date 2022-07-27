@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.isVisible
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -94,6 +95,15 @@ class MainActivity : AppCompatActivity() {
             val size = contentList.size
             curPageIndex = (Math.random() * size).toInt()
             updateBgAndPoem(contentList.get(curPageIndex).img_url)
+        }
+        binding.ivHide.setOnClickListener {
+            if(binding.clContent.isVisible){
+                it.background=resources.getDrawable(R.drawable.ic_hide)
+                binding.clContent.visibility=View.INVISIBLE
+            }else{
+                it.background=resources.getDrawable(R.drawable.ic_show)
+                binding.clContent.visibility=View.VISIBLE
+            }
         }
     }
 
