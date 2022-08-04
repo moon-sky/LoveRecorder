@@ -18,15 +18,21 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.moonvsky.testbirthday.databinding.ActivityMainBinding
 import com.moonvsky.testbirthday.service.bing.BingResponseUtils
 import com.moonvsky.testbirthday.service.poem.bean.Content_list
+import com.moonvsky.testbirthday.util.ImgUtils
+import com.moonvsky.testbirthday.view.HotSpotTagsAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONObject
 import pl.droidsonroids.gif.GifTextView
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var date: Date;
     private lateinit var contentList: List<Content_list>
     private var curPageIndex: Int = 0
+    private val TAG="MainActivity"
+    private var imgBmp:Bitmap?=null
     private val handler: Handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
@@ -66,6 +74,7 @@ class MainActivity : AppCompatActivity() {
                 val beijing = withContext(Dispatchers.IO) {
                     ServiceRepository.getWeather(Constants.HAIDIAN_CODE).execute().body()
                 }
+                Log.d(TAG,"北京："+beijing)
                 binding.tvWeather.text = beijing?.toString() ?: "没查到"
                 val bijie = withContext(Dispatchers.IO) {
                     ServiceRepository.getWeather(Constants.BIJIE_CODE).execute().body()
@@ -105,6 +114,39 @@ class MainActivity : AppCompatActivity() {
                 binding.clContent.visibility=View.VISIBLE
             }
         }
+
+
+        binding.diary.setOnClickListener{
+//            MainScope().launch {
+//                val diaryContent = withContext(Dispatchers.IO) {
+//                    ServiceRepository.getArticleDetail("slug").execute().body()
+//                }
+//                Log.d(TAG,"diaryContent = $diaryContent")
+//                if (diaryContent != null) {
+//                    binding.tvDiary.text=diaryContent
+//                }
+//            }
+            MainScope().launch {
+                val hotSpot = withContext(Dispatchers.IO) {
+                    ServiceRepository.getHotSpots().execute().body()
+                }
+                Log.d(TAG,"diaryContent = $hotSpot")
+                if (hotSpot != null) {
+                    var jsonObj=JSONObject(hotSpot)
+                    var dataObj=jsonObj.optJSONObject("data")
+                    val list= ArrayList<String>()
+                    dataObj.keys().forEach {
+                        if(list.size<=30){
+                            list.add(it)
+                        }
+                    }
+                    val tagAdapter=HotSpotTagsAdapter()
+                    tagAdapter.setData(list)
+                    binding.tag.setAdapter(tagAdapter)
+//                    binding.tvDiary.text=hotSpot
+                }
+            }
+        }
     }
 
     private fun updateBgAndPoem(url:String) {
@@ -130,6 +172,7 @@ class MainActivity : AppCompatActivity() {
                     isFirstResource: Boolean
                 ): Boolean {
                     if (resource != null) {
+                        imgBmp=resource;
                         Palette.from(resource).generate {
                             val vibrantColor =
                                 it?.getVibrantColor(resources.getColor(R.color.brown))

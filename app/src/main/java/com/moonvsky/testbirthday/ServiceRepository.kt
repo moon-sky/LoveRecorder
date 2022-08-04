@@ -1,6 +1,10 @@
 package com.moonvsky.testbirthday
 
 import com.moonvsky.testbirthday.service.bing.IbingPicService
+import com.moonvsky.testbirthday.service.diary.JianShuService
+import com.moonvsky.testbirthday.service.diary.bean.articleinfo.ArticleInfo
+import com.moonvsky.testbirthday.service.diary.bean.latestarticle.JSNewArticle
+import com.moonvsky.testbirthday.service.hotspot.IHotSpotService
 import com.moonvsky.testbirthday.service.poem.PoemService
 import com.moonvsky.testbirthday.service.poem.bean.PoemBean
 import com.moonvsky.testbirthday.service.weather.AMapWeatherService
@@ -17,5 +21,14 @@ object ServiceRepository {
     }
     fun getBingPic():Call<String>{
         return RetrofitHelper.getInstance(IbingPicService.BASE_URL,false).create(IbingPicService::class.java).getRandPic()
+    }
+    fun getLatestArticle():Call<JSNewArticle>{
+        return RetrofitHelper.getInstance(JianShuService.BASE_URL).create(JianShuService::class.java).getLatestDiary()
+    }
+    fun getArticleDetail(slug:String):Call<String>{
+        return RetrofitHelper.getInstance(JianShuService.BASE_URL,false).create(JianShuService::class.java).getDiaryContent()
+    }
+    fun getHotSpots():Call<String>{
+        return RetrofitHelper.getInstance(IHotSpotService.BASE_URL,false).create(IHotSpotService::class.java).getHotSpotData()
     }
 }

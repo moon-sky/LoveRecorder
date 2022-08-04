@@ -5,17 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+
     <ImageView
         android:id="@+id/iv_poem"
-        android:scaleType="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scaleType="center" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <pl.droidsonroids.gif.GifTextView
             android:id="@+id/bg"
             android:layout_width="match_parent"
@@ -49,9 +52,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/pick_me"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_time"
@@ -102,25 +105,61 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_weather" />
 
+        <TextView
+            android:id="@+id/tv_diary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/weather" />
+
+        <Button
+            android:id="@+id/diary"
+            style="@style/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/check_diary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_diary" />
+
+        <com.moxun.tagcloudlib.view.TagCloudView
+            android:id="@+id/tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:autoScrollMode="uniform"
+            app:darkColor="@color/teal_200"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/diary"
+            app:lightColor="@color/teal_700"
+            app:radiusPercent="0.6"
+            app:scrollSpeed="3">
 
 
-        <!--    <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent">-->
+        </com.moxun.tagcloudlib.view.TagCloudView>
 
-
-        <!--    </FrameLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/iv_hide"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:scaleType="center"
         android:src="@drawable/ic_show"
         app:layout_constraintBottom_toTopOf="@+id/tv_poem"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_download"
         android:layout_width="48dp"
-        android:layout_height="48dp" />
+        android:layout_height="48dp"
+        android:scaleType="center"
+        android:src="@android:drawable/stat_sys_download"
+        app:layout_constraintBottom_toTopOf="@+id/tv_poem"
+        app:layout_constraintRight_toLeftOf="@id/iv_hide" />
+
     <ImageView
         android:id="@+id/update"
         android:layout_width="48dp"
@@ -128,21 +167,21 @@
         android:src="@android:drawable/ic_menu_rotate"
         app:layout_constraintBottom_toTopOf="@+id/tv_poem"
         app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/tv_poem"
-        android:textSize="20sp"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center|top"
-        android:textColor="@android:color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="30dp"
         android:alpha="0.7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:padding="20dp"
+        android:text="如果你不爱我"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:text="如果你不爱我" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
