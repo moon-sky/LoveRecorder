@@ -9,8 +9,8 @@ import retrofit2.http.Path
 interface JianShuService {
     @GET("users/slug/1d1dcce04840/public_notes?order_by=shared_at")
     fun getLatestDiary():Call<JSNewArticle>
-//    @GET("/p/{slug}}")
-//    fun getDiaryContent(@Path("slug") slug:String):Call<ArticleInfo>
+    @GET("/p/{slug}}")
+    fun getDiaryContent(@Path("slug") slug:String):Call<ArticleInfo>
 //    @GET("p/1ab09227c891")
 //    fun getDiaryContent():Call<ArticleInfo>
     @GET("p/1ab09227c891")

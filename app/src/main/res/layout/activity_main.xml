@@ -33,36 +33,21 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rose"
             android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/weather" />
 
-        <!--    <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/wantgift"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintTop_toBottomOf="@+id/gif" />-->
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/gift"
             style="@style/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="@string/pick_me"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/time"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@+id/button" />
 
         <Button
             android:id="@+id/time"
@@ -71,47 +56,70 @@
             android:layout_height="wrap_content"
             android:text="@string/time_meet"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
+            app:layout_constraintStart_toEndOf="@+id/gift"
+            app:layout_constraintTop_toTopOf="@id/gift" />
 
-        <TextView
-            android:id="@+id/tv_weather"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toStartOf="@id/tv_weather2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/time" />
-
-        <TextView
-            android:id="@+id/tv_weather2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_weather"
-            app:layout_constraintTop_toBottomOf="@+id/time" />
 
         <Button
             android:id="@+id/weather"
             style="@style/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="@string/weather"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/diary"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_weather" />
+            app:layout_constraintTop_toBottomOf="@+id/gift" />
 
         <TextView
-            android:id="@+id/tv_diary"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_weather"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@color/teal_700"
             android:gravity="center"
             android:textSize="20sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@id/tv_weather2"
+            app:layout_constraintStart_toStartOf="@id/weather"
             app:layout_constraintTop_toBottomOf="@+id/weather" />
+
+        <TextView
+            android:id="@+id/tv_weather2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/teal_700"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/diary"
+            app:layout_constraintStart_toEndOf="@id/tv_weather"
+            app:layout_constraintTop_toTopOf="@+id/tv_weather" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/green"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/tv_weather2"
+            app:layout_constraintStart_toStartOf="@id/tv_weather"
+            app:layout_constraintTop_toBottomOf="@+id/tv_weather2" />
+
+        <TextView
+            android:id="@+id/tv_comments"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="@id/tv_time"
+            app:layout_constraintStart_toStartOf="@id/tv_time"
+            app:layout_constraintTop_toBottomOf="@+id/tv_time" />
 
         <Button
             android:id="@+id/diary"
@@ -120,8 +128,8 @@
             android:layout_height="wrap_content"
             android:text="@string/check_diary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_diary" />
+            app:layout_constraintStart_toEndOf="@id/weather"
+            app:layout_constraintTop_toTopOf="@id/weather" />
 
         <com.moxun.tagcloudlib.view.TagCloudView
             android:id="@+id/tag"
@@ -134,7 +142,7 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/diary"
             app:lightColor="@color/teal_700"
-            app:radiusPercent="0.6"
+            app:radiusPercent="0.5"
             app:scrollSpeed="3">
 
 
@@ -156,6 +164,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="center"
+        android:visibility="gone"
         android:src="@android:drawable/stat_sys_download"
         app:layout_constraintBottom_toTopOf="@+id/tv_poem"
         app:layout_constraintRight_toLeftOf="@id/iv_hide" />

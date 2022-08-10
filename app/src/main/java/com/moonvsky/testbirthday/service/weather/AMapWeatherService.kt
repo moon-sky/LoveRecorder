@@ -8,6 +8,6 @@ interface AMapWeatherService {
     @GET("weatherInfo?key=991105342e15dadca6f1c2c18c3c940c")
     fun getWeatherInfo(@Query("city") name:String): Call<WeatherBean>
     companion object{
-        val BASE_URL="https://restapi.amap.com/v3/weather/"
+        const val BASE_URL="https://restapi.amap.com/v3/weather/"
     }
 }
